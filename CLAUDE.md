@@ -159,15 +159,18 @@ Decision records: when `engineering:architecture` or `domain-modeling` writes an
 
 **Every session in a project runs the same loop: orient, report, route, close.**
 
-1. **Orient (silently, read-only):** the project's `CLAUDE.md`, `CONTEXT.md` and ADR index; `git status`, the current branch, unmerged branches, and the backlog if one exists. A repo without `README.md`/`CLAUDE.md` gets §6 setup first.
+1. **Orient (silently, read-only):** the project's `CLAUDE.md`, `CONTEXT.md` and ADR index; `git status`, the current branch, unmerged branches, and the backlog if one exists; and `.claude/handoff.md` if a previous session left one. Resume from the handoff, then delete it. A repo without `README.md`/`CLAUDE.md` gets §6 setup first.
 2. **Report** in at most 5 bullets (branch, uncommitted work, open branches, recent commits, backlog). When my first message already names the task, go straight to step 3.
 3. **Route by task:**
-   - Bug: `diagnosing-bugs` → fix with `tdd` → `code-review`
+   - Bug from a code-review finding: fix with `tdd` (a failing test reproduces the finding first) → `code-review`
+   - Bug I describe from what I see: reproduce it in the browser → fix → show me a before/after screenshot. Where the cause sits in testable logic, add a `tdd` test that fails first.
+   - Other bugs (errors, failing tests, slowness): `diagnosing-bugs` → fix with `tdd` → `code-review`
    - Prototype: `prototype`, labeled throwaway → report what it answered. Keeping it makes it a feature.
    - Feature or change: `grill-with-docs` → `to-spec` → `to-tickets` (local files) → `implement` (runs `tdd` and `code-review`)
    - New project: `grill-with-docs` → `README.md`, `CLAUDE.md`, `CONTEXT.md` (§6) → `to-spec` → `to-tickets`
    - Research: `research`
 4. **Close:** the project's checks pass; path rules, ADRs and `CONTEXT.md` reflect the change (§5, §6); then the §9 summary.
+5. **Unfinished work:** write `.claude/handoff.md`: the goal, current state and working theory, what's left, open decisions, and the skills to call next. Point to specs, ADRs and commits by path rather than copying them, and leave out secrets. It is never committed: add it to `.gitignore` if the repo tracks `.claude/`.
 
 ---
 

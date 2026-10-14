@@ -71,7 +71,7 @@ Claude Code treats this location as organization policy, which outranks project 
 
 **§11 Skills.** Several plugins cover the same job (debugging, TDD, review, research, stress-testing). Naming one skill per job, all from one author's set, makes the same skill run every time. The council (five AI advisors) is offered only for high-stakes decisions and runs on your yes, so its token cost is never a surprise.
 
-**§12 Session start.** Every session orients itself (project docs, git state, open branches), reports in a few bullets, then routes the task through a fixed skill sequence: bug, prototype, feature, new project or research. You never have to remember which skill comes next, and every session ends with checks passing and docs updated.
+**§12 Session start.** Every session orients itself (project docs, git state, open branches), reports in a few bullets, then routes the task through a fixed skill sequence: bug, prototype, feature, new project or research. Bugs route by how you found them: a code-review finding gets a test-first fix, a bug you describe from the screen gets reproduced in the browser with a before/after screenshot. You never have to remember which skill comes next, every session ends with checks passing and docs updated, and unfinished work leaves a handoff note the next session resumes from.
 
 ## License
 
