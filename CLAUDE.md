@@ -76,15 +76,16 @@ Each `.claude/rules/<area>.md` carries a `paths:` glob and holds only what the c
 
 ## 6. Project Documentation & Decision Records
 
-**Four kinds of file, each with one job. Only `CLAUDE.md` loads every session.**
+**Five kinds of file, each with one job. Only `CLAUDE.md` loads every session.**
 
 Standard doc set for every coding project:
 - `README.md` — for me: what it is, setup, how to run.
 - `CLAUDE.md` — for Claude, under 200 lines: commands, conventions, project-wide gotchas, and an index of ADRs (one line each, linked).
 - `.claude/rules/<area>.md` — area gotchas and invariants, loaded only when Claude touches matching files (§5).
 - `docs/adr/NNNN-<title>.md` — one short record per significant decision.
+- `CONTEXT.md` — the project glossary: one line per domain term, kept by `grill-with-docs`. Use its terms in code, docs and chat.
 
-**New or empty repo:** create `README.md` and `CLAUDE.md` with the first substantive change; add rules and ADRs as they arise. Skip throwaway scripts and one-off experiments.
+**New or empty repo:** create `README.md` and `CLAUDE.md` with the first substantive change; add `CONTEXT.md`, rules and ADRs as they arise. Skip throwaway scripts and one-off experiments.
 
 An ADR records one of three things:
 1. **Rejected alternative** — a simpler or obvious approach that was ruled out, and why.
@@ -104,7 +105,7 @@ Rules:
 
 ## 8. Execution Mode: Take the Recommendation
 
-**When a skill or workflow offers a choice of how to execute (subagent-driven vs. inline/native, parallel session vs. this one, etc.) and one option is marked recommended, pick it and proceed — never ask me.** This overrides the Superpowers `writing-plans` execution handoff and any similar prompt. State in one line which mode you're using and why, then start. Still ask about design decisions and reviewing the plan's task list; this only covers *how* the work runs.
+**When a skill or workflow offers a choice of how to execute (subagent-driven vs. inline/native, parallel session vs. this one, etc.) and one option is marked recommended, pick it and proceed — never ask me.** This overrides any skill's execution-mode prompt. State in one line which mode you're using and why, then start. Still ask about design decisions and reviewing the plan's task list; this only covers *how* the work runs.
 
 Exception: caps and milestone reports (§4, §10) still apply. "Don't involve me" means no per-step questions, not no milestone reports.
 
@@ -139,18 +140,34 @@ Exception: caps and milestone reports (§4, §10) still apply. "Don't involve me
 
 ## 11. Skills
 
-**One skill per job; every skill's output follows §9.**
+**One skill per job, from Matt Pocock's set (`mattpocock-skills`); every skill's output follows §9.**
 
 Where several skills cover the same job, use the one listed (a skill or command I invoke by name still wins):
-- Debugging something broken, throwing, failing or slow: `mattpocock-skills:diagnosing-bugs`
-- Building a feature or fixing a bug: `superpowers:test-driven-development`
-- Reviewing code: `mattpocock-skills:code-review`
-- Researching a question: `mattpocock-skills:research`
-- Stress-testing, pressure-testing or grilling a plan: `mattpocock-skills:grilling`. Run `anthropic-skills:llm-council` only when I ask for the council.
+- Debugging something broken, throwing, failing or slow: `diagnosing-bugs`
+- Building a feature or fixing a bug test-first: `tdd`
+- Reviewing code: `code-review`
+- Researching a question: `research`
+- Stress-testing, pressure-testing or grilling a plan: `grilling`
 
-`superpowers:brainstorming`, `mattpocock-skills:grilling` and `anthropic-skills:llm-council` present options and tradeoffs in the §9 decision format; give the pick or the council's verdict when I ask for it.
+For a high-stakes or hard-to-reverse decision, offer `anthropic-skills:llm-council` in one line; run it only on my yes, or when I ask for the council.
 
-Decision records: when `engineering:architecture` or `mattpocock-skills:domain-modeling` writes an ADR, save it in `docs/adr/` in the §6 format and add it to `CLAUDE.md`'s ADR index.
+Skills that present options (`grilling`, `grill-with-docs`, the council) use the §9 decision format; give the pick or the council's verdict when I ask for it.
+
+Decision records: when `engineering:architecture` or `domain-modeling` writes an ADR, save it in `docs/adr/` in the §6 format and add it to `CLAUDE.md`'s ADR index.
+
+## 12. Session Start
+
+**Every session in a project runs the same loop: orient, report, route, close.**
+
+1. **Orient (silently, read-only):** the project's `CLAUDE.md`, `CONTEXT.md` and ADR index; `git status`, the current branch, unmerged branches, and the backlog if one exists. A repo without `README.md`/`CLAUDE.md` gets §6 setup first.
+2. **Report** in at most 5 bullets (branch, uncommitted work, open branches, recent commits, backlog). When my first message already names the task, go straight to step 3.
+3. **Route by task:**
+   - Bug: `diagnosing-bugs` → fix with `tdd` → `code-review`
+   - Prototype: `prototype`, labeled throwaway → report what it answered. Keeping it makes it a feature.
+   - Feature or change: `grill-with-docs` → `to-spec` → `to-tickets` (local files) → `implement` (runs `tdd` and `code-review`)
+   - New project: `grill-with-docs` → `README.md`, `CLAUDE.md`, `CONTEXT.md` (§6) → `to-spec` → `to-tickets`
+   - Research: `research`
+4. **Close:** the project's checks pass; path rules, ADRs and `CONTEXT.md` reflect the change (§5, §6); then the §9 summary.
 
 ---
 

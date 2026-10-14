@@ -5,7 +5,7 @@ My global `CLAUDE.md` for Claude Code, and why each rule is in it.
 ## Install
 
 1. Copy `CLAUDE.md` to `~/.claude/CLAUDE.md` (Windows: `%USERPROFILE%\.claude\CLAUDE.md`). Claude Code loads it in every project.
-2. Install the plugins that §11 routes to: `superpowers` and `mattpocock-skills` (both in the official marketplace, `claude-plugins-official`), plus `engineering` and `anthropic-skills` from the Claude app's plugin directory. If one is missing, its routing line simply never fires.
+2. Install the plugins that §11 and §12 route to: `mattpocock-skills` (official marketplace, `claude-plugins-official`), plus `engineering` and `anthropic-skills` from the Claude app's plugin directory. If one is missing, its routing line simply never fires. Don't also install `superpowers`: it covers the same steps and triggers itself, so two systems compete.
 
 ### Optional: make the global file win over project files
 
@@ -59,7 +59,7 @@ Claude Code treats this location as organization policy, which outranks project 
 
 **§5 Path rules.** Area pitfalls live in `.claude/rules/` files that load only when Claude touches matching code, and they're updated in the same change as the code. Claude gets the warning exactly when it's relevant, at no cost the rest of the time.
 
-**§6 Project docs.** Every project has the same four files: `README` for you, `CLAUDE.md` under 200 lines for Claude, path rules, and one-page decision records (ADRs). It follows Anthropic's guidance (short, always-loaded instructions; leave out what the code shows) and the original ADR practice (small, write-once records), and replaces feature docs that go stale and decision logs that grow to thousands of lines.
+**§6 Project docs.** Every project has the same five kinds of file: `README` for you, `CLAUDE.md` under 200 lines for Claude, path rules, one-page decision records (ADRs), and a `CONTEXT.md` glossary so Claude and you use the same short terms. It follows Anthropic's guidance (short, always-loaded instructions; leave out what the code shows) and the original ADR practice (small, write-once records), and replaces feature docs that go stale and decision logs that grow to thousands of lines.
 
 **§7 No attribution trailers.** Commit history stays yours.
 
@@ -69,7 +69,9 @@ Claude Code treats this location as organization policy, which outranks project 
 
 **§10 Judged work.** Claude measures against a verified reference, treats AI reviewers' verdicts as evidence rather than decisions, and brings subjective calls to you as before/after comparisons, so it can't confidently "improve" something no test can check.
 
-**§11 Skills.** Several plugins cover the same job (debugging, TDD, review, research, stress-testing). Naming one skill per job makes the same skill run every time.
+**§11 Skills.** Several plugins cover the same job (debugging, TDD, review, research, stress-testing). Naming one skill per job, all from one author's set, makes the same skill run every time. The council (five AI advisors) is offered only for high-stakes decisions and runs on your yes, so its token cost is never a surprise.
+
+**§12 Session start.** Every session orients itself (project docs, git state, open branches), reports in a few bullets, then routes the task through a fixed skill sequence: bug, prototype, feature, new project or research. You never have to remember which skill comes next, and every session ends with checks passing and docs updated.
 
 ## License
 
